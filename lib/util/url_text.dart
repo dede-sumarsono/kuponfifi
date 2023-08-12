@@ -15,7 +15,8 @@ class UrlText extends pw.StatelessWidget{
       text,
       style: const pw.TextStyle(
         decoration: pw.TextDecoration.underline,
-        color: PdfColors.blue,
+        color: PdfColors.black,
+        //color: PdfColors.blue,
 
 
       )

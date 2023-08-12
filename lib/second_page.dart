@@ -8,6 +8,7 @@ import 'package:kuponfifi/model/kupon.dart';
 import 'package:kuponfifi/pdf/pdf_page.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:dio/dio.dart' as Dio;
+import 'package:kuponfifi/scan/scan_page.dart';
 import 'package:kuponfifi/services/dio.dart';
 
 class SecondPage extends StatefulWidget {
@@ -23,29 +24,15 @@ class _SecondPageState extends State<SecondPage> {
 
   getDataKupon() async {
 
-    //Dio.Response response = await dio().post('/post',data: creds,options: Dio.Options(headers: {'Authorization' : 'Bearer $_token'}));
     Dio.Response response = await dio().get('/getqr');
     print(response.data.toString());
     data_qr = response.data;
 
 
-    /*List<dynamic> list = json.decode(response.data)['data']
-        .map((data) => DataPrint.fromJson(data))
-        .toList();
-    */
-
     var list = response.data['data'] as List;
 
     print('hasil dari list : ${list[0]}');
 
-
-   /* List<Kupon> qr_data = List.generate(2, (index) {
-      return Kupon(data: response.data['data']);
-    });*/
-
-    /*list = json.decode(response.data)['results']
-        .map((data) => Kupon(data: response.data['data'][0])) //Kupon.fromJson(data))
-        .toList();*/
 
   }
 
@@ -116,6 +103,14 @@ class _SecondPageState extends State<SecondPage> {
 
               },
               child: Text('Chek Model'),
+            ),
+
+
+            ElevatedButton(
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ScanPage()));
+              },
+              child: Text('Scan Barcode'),
             ),
 
 

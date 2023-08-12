@@ -4,6 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kuponfifi/util/url_text.dart';
 import 'package:open_file/open_file.dart';
@@ -50,8 +51,12 @@ Future<Uint8List>generatePdf(final PdfPageFormat format) async{
 
   doc.addPage(
     pw.MultiPage(
+      maxPages: 100,
       pageTheme: pageTheme,
-      /*header: (final context)=>pw.Image(
+      header: (final context)=>
+      pw.SizedBox(height: 20),
+
+          /*pw.Image(
         alignment: pw.Alignment.topLeft,
         logoImage,
         fit: pw.BoxFit.contain,
@@ -61,69 +66,142 @@ Future<Uint8List>generatePdf(final PdfPageFormat format) async{
         footerImage,
         fit: pw.BoxFit.scaleDown,
       ),*/
-      build: (final context)=>[
-        pw.Container(
+
+        footer: (final context)=>pw.SizedBox(height: 20),
+      //build: (final context)=> <Widget>[
+      build: (final context)=> [
+
+        for (int i = 0; i < list.length; i++)
+          _barcodean(list,i)
+
+
+
+
+
+
+
+        /*pw.Container(
           padding: pw.EdgeInsets.only(left: 30,bottom: 20),
           child: pw.Column(
             crossAxisAlignment: pw.CrossAxisAlignment.center,
             mainAxisAlignment: pw.MainAxisAlignment.start,
             children: [
               pw.Padding(padding: const pw.EdgeInsets.only(top: 20)),
-              pw.Row(
-                crossAxisAlignment: pw.CrossAxisAlignment.start,
-                //mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                mainAxisAlignment: pw.MainAxisAlignment.start,
-                children: [
-                  pw.Column(
-                    crossAxisAlignment: pw.CrossAxisAlignment.end,
-                    children: [
-                      pw.Text('Nama : ${list[0]['name']}'),
-                      pw.Text('Pondok : ${list[0]['asrama']}'),
-                      //pw.Text('Instagram : '),
-                    ]
-                  ),
-                  pw.SizedBox(width: 70),
-                  pw.Column(
-                    crossAxisAlignment: pw.CrossAxisAlignment.start,
-                    children: [
-                      pw.Text(' Fifi Aja'),
-                      UrlText(' Asrama I ','myflutter@gmail.com'),
-                      //UrlText('flutter tutorial', '@fluttertutorial'),
-                    ],
-                  ),
-                  pw.SizedBox(width: 70),
-                  pw.BarcodeWidget(
-                    //data: "Flutter School",
-                    data: "${list[0]['qr_code']}",
-                    width: 40,
-                    height: 40,
-                    barcode: pw.Barcode.qrCode(),
-                    drawText: false
-                  )
-                ],
-              ),
+
+              pw.SizedBox(height: 20),
 
 
+              pw.ListView.builder(
+                  itemCount : list == null ? 0 : list.length,
+                  spacing: 40,
+                  itemBuilder: (context, int index) {
+                    return pw.Container(
+                      child: pw.Row(
+                        crossAxisAlignment: pw.CrossAxisAlignment.start,
+                        //mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: pw.MainAxisAlignment.start,
+                        children: [
 
+                          pw.Column(
+                              crossAxisAlignment: pw.CrossAxisAlignment.end,
+                              children: [
+                                pw.Text('Nama : '),
+                                pw.Text('Pondok : '),
+                                //pw.Text('Instagram : '),
+                              ]
+                          ),
+                          pw.SizedBox(width: 70),
+                          pw.Column(
+                            crossAxisAlignment: pw.CrossAxisAlignment.start,
+                            children: [
+                              pw.Text(' ${list[index]['name']}'),
+                              UrlText(' ${list[index]['asrama']} ','myflutter@gmail.com'),
+                              //UrlText('flutter tutorial', '@fluttertutorial'),
+                            ],
+                          ),
+                          pw.SizedBox(width: 70),
+                          pw.BarcodeWidget(
+                            //data: "Flutter School",
+                              data: "${list[index]['qr_code']}",
+                              width: 40,
+                              height: 40,
+                              barcode: pw.Barcode.qrCode(),
+                              drawText: false
+                          )
+                        ],
+                      ),
 
-              //////////////////second
-
-
-
-
-
+                    );
+                  })
 
 
 
             ],
           ),
-        ),
+        ),*/
+
+
+
+
 
       ]
     )
   );
 
   return doc.save();
+}
+
+_barcodean(list, index){
+  return
+
+    pw.Column(
+      children:[
+        pw.SizedBox(height: 20),
+
+        pw.Row(
+          crossAxisAlignment: pw.CrossAxisAlignment.start,
+          //mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: pw.MainAxisAlignment.start,
+          children: [
+
+            //pw.SizedBox(height: 20),
+
+            pw.Column(
+                crossAxisAlignment: pw.CrossAxisAlignment.end,
+                children: [
+                  pw.Text('Nama : '),
+                  pw.Text('Pondok : '),
+                  //pw.Text('Instagram : '),
+                ]
+            ),
+            pw.SizedBox(width: 70),
+            pw.Column(
+              crossAxisAlignment: pw.CrossAxisAlignment.start,
+              children: [
+                pw.Text(' ${list[index]['name']}'),
+                UrlText(' ${list[index]['asrama']} ','myflutter@gmail.com'),
+                //UrlText('flutter tutorial', '@fluttertutorial'),
+              ],
+            ),
+            pw.SizedBox(width: 70),
+            pw.BarcodeWidget(
+              //data: "Flutter School",
+                data: "${list[index]['qr_code']}",
+                width: 40,
+                height: 40,
+                barcode: pw.Barcode.qrCode(),
+                drawText: false
+            )
+          ],
+        )
+
+
+
+
+      ]
+
+    );
+
 }
 
 Future<pw.PageTheme>_myPageTheme(PdfPageFormat format)async{
