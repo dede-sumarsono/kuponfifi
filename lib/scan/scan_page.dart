@@ -4,6 +4,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:kuponfifi/scan/scanner.dart';
+import 'package:dio/dio.dart' as Dio;
+import 'package:fluttertoast/fluttertoast.dart';
+import '../services/dio.dart';
 
 class ScanPage extends StatefulWidget {
   const ScanPage({Key? key}) : super(key: key);
@@ -42,6 +45,7 @@ class _ScanPageState extends State<ScanPage> {
                 ElevatedButton(
                     onPressed: (){
                       print('Kupon telah dihanguskan');
+                      deleteKupon(qr: _result);
 
 
 
@@ -60,7 +64,7 @@ class _ScanPageState extends State<ScanPage> {
 
       Center(
         child: Text(
-           'Silahkan Scan Barcode',
+           'Silahkan Scan Barcode Dulu',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 20
@@ -85,4 +89,59 @@ class _ScanPageState extends State<ScanPage> {
       _result = result;
     });
   }
+
+
+  //////////////delete kupon
+  void deleteKupon ({required String qr}) async {
+    try{
+      Dio.Response response = await dio().post('/qrdelete/$qr');
+      print(response.data.toString());
+
+      String toast = response.data['data'].toString();
+      Fluttertoast.showToast(
+          msg: toast,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.green,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+
+
+    } catch(e){
+
+      String toast = 'Kupon gagal dihapuskan';
+      Fluttertoast.showToast(
+          msg: toast,
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.red,
+          textColor: Colors.white,
+          fontSize: 16.0
+      );
+
+
+      if(e.toString() == 'DioException [bad response]: The request returned an invalid status code of 500.'){
+        toast = 'Kupon tidak ada';
+        Fluttertoast.showToast(
+            msg: toast,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.red,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+      }
+
+      print(e);
+    }
+
+  }
+  /////////// delete kupon selesai
+
+
+
 }
