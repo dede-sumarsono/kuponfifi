@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:kuponfifi/history_kupon/history_kupon.dart';
 import 'package:kuponfifi/model/data_print.dart';
 import 'package:kuponfifi/model/kupon.dart';
 import 'package:kuponfifi/pdf/pdf_page.dart';
@@ -280,6 +281,46 @@ class _SecondPageState extends State<SecondPage> {
                       SizedBox(height: 5,),
                       Text(
                         'Scan Kupon',
+                        textAlign: TextAlign.center,
+                        maxLines: 2,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 15
+                        ),
+
+                      )
+                    ],
+                  ),
+                ),
+              ),
+
+              Spacer(),
+
+              InkWell(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>HistoriKupon()));
+                },
+                child: Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      //  color: Color.fromRGBO(255, 255, 255, 100),
+                      color: Colors.deepOrange
+                  ),
+                  width: MediaQuery.of(context).size.width*0.4,
+                  height: MediaQuery.of(context).size.height*0.2,
+
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+
+                      Icon(
+                        Icons.history,
+                        size: MediaQuery.of(context).size.width*0.2,
+                        color: Colors.white,),
+                      SizedBox(height: 5,),
+                      Text(
+                        'Riwayat Kupon',
                         textAlign: TextAlign.center,
                         maxLines: 2,
                         style: TextStyle(
